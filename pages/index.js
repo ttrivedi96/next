@@ -39,16 +39,16 @@ export async function getStaticProps() {
   const client = await MongoClient.connect("mongodb://localhost:27017/meetup");
   const db = client.db();
   const meetUpsCollection = await db.collection("meet_data");
-  const meetups = await meetUpsCollection.find().toArray();
-    
+  const meetups = await meetUpsCollection.find({}).toArray();
+    // console.log(meetups)
   client.close();
   
   
   return{
     //   props: meetups
             props:{
-                meetups: meetups.map((meetup) => ({
-                  title: meetup.title ?? null,
+                meetups: meetups.map(meetup => ({
+                  title: meetup.title || null,
                   address: meetup.address || null,
                   image: meetup.image || null,
                   id: meetup._id.toString() || String,
